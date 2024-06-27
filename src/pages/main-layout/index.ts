@@ -1,0 +1,1 @@
+export { MainLayout } from "@/pages/main-layout/ui";
