@@ -1,0 +1,18 @@
+.loginBtn {
+    padding: .5rem 1rem;
+    gap: 8px;
+    border-radius: 8px;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    color: white;
+    background-color: #FF5500;
+    cursor: pointer;
+}
+
+.loginBtn:active {
+    outline: none;
+}
+

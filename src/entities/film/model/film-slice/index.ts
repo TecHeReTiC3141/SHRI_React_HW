@@ -22,7 +22,7 @@ const initialState: FilmState = {
     releaseYearFilter: "",
 };
 
-const filmSlice = createSlice({
+const filmSlice = createSlice<FilmState>({
     name: "film",
     initialState,
     reducers: {
