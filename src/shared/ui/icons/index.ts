@@ -6,3 +6,6 @@ export * from "./ArrowLeft.tsx";
 export * from "./ArrowRight.tsx";
 export * from "./MagnifyingGlass.tsx";
 export * from "./LoadingSpinner.tsx";
+export * from "./EmptyStar.tsx";
+export * from "./HoverStart.tsx";
+export * from "./FilledStar.tsx";

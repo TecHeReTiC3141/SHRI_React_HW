@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { getToken, selectIsAuthed } from "@/entities/film/model/auth-slice";
 import { Logout } from "@/entities/header/logout";
 import { LogoutButton } from "@/features/logout-button";
+import styles from "./styles.module.css";
+import classNames from "classnames";
 
 export function MainLayout() {
 
@@ -22,7 +24,7 @@ export function MainLayout() {
 
     console.log(token);
     return (
-        <div className="main-layout">
+        <div className={classNames(isModalVisible && styles.modalOpened)}>
             <Header action={isAuthed ? <Logout action={<LogoutButton />} /> : <LoginButton />} isAuthed={isAuthed}/>
             <Outlet />
             {isModalVisible && <LoginForm />}

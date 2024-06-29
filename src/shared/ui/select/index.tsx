@@ -14,7 +14,7 @@ interface SelectFieldProps {
 export function SelectField({ name, labelText, options, value, onSelect }: SelectFieldProps) {
     const [ isOpened, setIsOpened ] = useState<boolean>(false);
     const selectRef = useRef<HTMLSelectElement | null>(null);
-
+    // TODO: implement styling for select options
     return (
         <div style={{ position: "relative" }}>
             <label htmlFor={name} className={styles.selectLabel}>{labelText}</label>

@@ -1,4 +1,4 @@
-import styles from "@/features/actor-list-shifters/styles.module.css";
+import styles from "@/features/shifters/styles.module.css";
 import classNames from "classnames";
 import React, { ReactNode } from "react";
 

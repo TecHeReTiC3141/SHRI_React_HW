@@ -1,15 +1,14 @@
 import { ShortMovieInfo } from "@/shared/api/films";
-import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-import styles from "@/entities/film/ui/film-row/styles.module.css";
+import styles from "./styles.module.css";
+import { StarRating } from "@/features/star-rating";
 
 interface FilmRowProps {
     film: ShortMovieInfo,
-    action: ReactNode,
 }
 
-export function FilmRow({ film, action }: FilmRowProps) {
+export function FilmRow({ film }: FilmRowProps) {
     return (
         <Link to={`/${film.id}`} className={styles.filmRow}>
             <img src={film.poster} alt={film.title} className={styles.filmRowImage}/>
@@ -29,7 +28,7 @@ export function FilmRow({ film, action }: FilmRowProps) {
                         <p>{film.description}</p>
                     </div>
                 </div>
-                {action}
+                <StarRating disabled={true} rating={Math.round(+film.rating)} className={styles.rating}/>
             </div>
         </Link>
     );

@@ -29,7 +29,7 @@
     height: 16px;
 }
 
-.loginForm .selectLabel {
+.loginForm .inputLabel {
     font-family: Inter, sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -37,7 +37,7 @@
     text-align: left;
 }
 
-.loginForm .selectLabel:after {
+.loginForm .inputLabel:after {
     content: "*";
     font-family: "SF Pro T", sans-serif;
     font-size: 14px;
@@ -86,6 +86,7 @@
     color: white;
     background-color: #FF5500;
     cursor: pointer;
+    border: none;
 }
 
 .loginForm .cancelButton {

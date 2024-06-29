@@ -31,6 +31,7 @@ export function LoginForm() {
             console.log(response);
             if (response.token) {
                 dispatch(createToken(response.token));
+                closeForm();
             } else {
                 console.error(response.error);
             }
@@ -42,7 +43,7 @@ export function LoginForm() {
     }
 
     return (
-        <Modal>
+        <Modal closeModal={closeForm}>
             <form action="" onSubmit={handleSubmit} method="POST" className={styles.loginForm}>
                 <div className={styles.header}>
 

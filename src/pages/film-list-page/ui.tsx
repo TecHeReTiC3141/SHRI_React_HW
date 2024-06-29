@@ -18,7 +18,7 @@ import {
     updateTotalPages
 } from "@/entities/film/model/film-slice";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
-import { Shifter } from "@/features/actor-list-shifters";
+import { Shifter } from "@/features/shifters";
 import { ArrowLeft, ArrowRight } from "@/shared/ui/icons";
 import { NoFilmsFound } from "@/entities/film/ui/no-films-found";
 

@@ -7,6 +7,7 @@
     column-gap: 1.25rem;
     text-decoration: none;
     color: #1B1F23;
+    position: relative;
 }
 
 .filmRow:active {
@@ -19,6 +20,7 @@
     font-weight: 600;
     text-align: left;
     margin-bottom: 1rem;
+    max-width: 700px;
 }
 
 .filmRowImage {
@@ -46,4 +48,10 @@
 .filmRowInfo {
     display: flex;
     column-gap: .75rem;
+}
+
+.rating {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
 }
