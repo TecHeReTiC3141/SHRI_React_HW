@@ -6,12 +6,18 @@ import { ActorsGallery } from "@/entities/film/ui/actors-gallery";
 import { FullMovieInfo } from "@/shared/api/films";
 
 import styles from "./styles.module.css";
+import { Shifter } from "@/features/actor-list-shifters";
+import { ArrowLeft, ArrowRight } from "@/shared/ui/icons";
 
 export function FilmDetailsPage() {
 
     const { id } = useParams<{ id: number }>();
 
-    const { data, isLoading, error }: {data: FullMovieInfo, isLoading: boolean, error: { data: string }} = useGetFilmByIdQuery(id);
+    const { data, isLoading, error }: {
+        data: FullMovieInfo,
+        isLoading: boolean,
+        error: { data: string }
+    } = useGetFilmByIdQuery(id);
 
     if (isLoading) {
         return <Loading/>;
@@ -23,7 +29,11 @@ export function FilmDetailsPage() {
     return (
         <div className={styles.page}>
             <FilmCard film={data} action={<div>Action</div>}/>
-            <ActorsGallery actors={data.actors}/>
+            <ActorsGallery actors={data.actors}
+                           leftShifter={<Shifter disabled={false} onClick={() => console.log("Left")}
+                                                 icon={<ArrowLeft width={16} height={16}/>}/>}
+                           rightShifter={<Shifter disabled={false} onClick={() => console.log("Right")}
+                                                  icon={<ArrowRight width={16} height={16}/>}/>}/>
         </div>
     );
 }

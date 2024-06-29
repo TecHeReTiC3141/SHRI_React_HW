@@ -29,12 +29,14 @@ export const apiSlice = createApi({
         return headers
     },
     endpoints: ({query, mutation}) => ({
-        getSearchFilms: query<SearchFilmsResponse, { title?: string, genre?: string, release_year?: string }>({
-            query: ({ title = "", genre = "", release_year = "" }) => {
+        getSearchFilms: query<SearchFilmsResponse, { title?: string, genre?: string, release_year?: string, page?: number }>({
+            query: ({ title = "", genre = "", release_year = "", page = 1 }) => {
                 const params = new URLSearchParams();
                 if (title) params.append("title", title);
                 if (genre) params.append("genre", genre);
                 if (release_year) params.append("release_year", release_year);
+                if (page) params.append("page", page.toString());
+                console.log(page.toString());
                 return { url: `/search?${params.toString()}` };
             }
         }),

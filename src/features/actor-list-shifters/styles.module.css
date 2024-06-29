@@ -1,0 +1,25 @@
+.shifter {
+    padding: 8px 12px;
+    border-radius: 32px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 4px 0 #0000004D;
+}
+
+.shifter:focus {
+    outline: none;
+}
+
+.shifter:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}

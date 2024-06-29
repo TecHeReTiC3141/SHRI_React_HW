@@ -11,6 +11,7 @@
 .gallery {
     display: flex;
     column-gap: 1.5rem;
+    position: relative;
 }
 
 .name {
