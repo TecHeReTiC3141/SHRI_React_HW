@@ -53,4 +53,4 @@ export const apiSlice = createApi({
         })
     })
 });
-export const { useGetSearchFilmsQuery, useLoginMutation } = apiSlice;
+export const { useGetSearchFilmsQuery, useGetFilmByIdQuery, useLoginMutation } = apiSlice;
