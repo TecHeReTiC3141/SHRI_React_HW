@@ -10,7 +10,6 @@ interface FilmRowProps {
 }
 
 export function FilmRow({ film, action }: FilmRowProps) {
-    console.log(styles);
     return (
         <Link to={`/${film.id}`} className={styles.filmRow}>
             <img src={film.poster} alt={film.title} className={styles.filmRowImage}/>

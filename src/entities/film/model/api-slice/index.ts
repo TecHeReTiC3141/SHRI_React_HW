@@ -7,6 +7,16 @@ export interface SearchFilmsResponse {
     total_pages: number;
 }
 
+export interface LoginRequest {
+    username: string;
+    password: string;
+}
+
+export interface LoginResponse {
+    token?: string;
+    error?: string;
+}
+
 export const apiSlice = createApi({
     reducerPath: "apiSlice",
     baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3030/api/v1" }),
@@ -18,7 +28,7 @@ export const apiSlice = createApi({
         headers.set("content-type", "application/json");
         return headers
     },
-    endpoints: ({query}) => ({
+    endpoints: ({query, mutation}) => ({
         getSearchFilms: query<SearchFilmsResponse, void>({
             query: () => ({ url: "/search" })
         }),
@@ -28,6 +38,13 @@ export const apiSlice = createApi({
                 return `/movie/${id}`;
             },
         }),
+        login: mutation<LoginRequest, LoginRequest>({
+            query: (request: LoginRequest) => ({
+                url: "/login",
+                method: "POST",
+                body: request,
+            }),
+        })
     })
 });
-export const { useGetSearchFilmQuery } = apiSlice;
+export const { useGetSearchFilmsQuery, useLoginMutation } = apiSlice;

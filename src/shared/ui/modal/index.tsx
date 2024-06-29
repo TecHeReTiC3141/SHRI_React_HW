@@ -7,6 +7,8 @@ interface ModalProps {
 }
 
 export function Modal({children}: ModalProps) {
+
+    // TODO: when backdrop is clicked, close the modal
     return createPortal(
         <>
             <div className={styles.modalBackdrop} />

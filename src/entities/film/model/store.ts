@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { AnyAction, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
 import FilmReducer from "@/entities/film/model/film-slice";
 import AuthReducer from "@/entities/film/model/auth-slice";
 import { apiSlice } from "@/entities/film/model/api-slice";
@@ -16,5 +16,8 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+export type AppThunkDispatch = ThunkDispatch<RootState, never, AnyAction>;
+
+
+export const useAppDispatch = useDispatch.withTypes<AppThunkDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();

@@ -1,0 +1,12 @@
+.logout {
+    display: flex;
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.logout .avatar {
+    padding: 6px 8px;
+    border-radius: 32px;
+    background: white;
+}
+

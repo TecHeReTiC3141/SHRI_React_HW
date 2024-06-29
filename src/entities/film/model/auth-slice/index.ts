@@ -40,6 +40,7 @@ export const authSlice = createSlice<AuthState>({
     },
     selectors: {
         selectToken: (sliceState: AuthState) => sliceState.token,
+        selectIsAuthed: (sliceState: AuthState) => sliceState.token !== "",
         selectError: (sliceState: AuthState) => sliceState.authError,
     },
     extraReducers: builder => builder
@@ -60,6 +61,7 @@ export const authSlice = createSlice<AuthState>({
 export const createToken = createAsyncThunk(
     "auth/createToken",
     (token: string) => {
+        console.log(token);
         localStorage.setItem("token", token);
         return localStorage.getItem("token");
     },
@@ -68,7 +70,7 @@ export const createToken = createAsyncThunk(
 export const getToken = createAsyncThunk(
     "auth/getToken",
     () => {
-        return localStorage.getItem("token");
+        return localStorage.getItem("token") || "";
     },
 );
 
@@ -82,3 +84,5 @@ export const deleteToken = createAsyncThunk(
 export default authSlice.reducer;
 
 export const { openModal, closeModal, updateName, updatePassword, clearForm } = authSlice.actions;
+
+export const {selectIsAuthed} = authSlice.selectors;

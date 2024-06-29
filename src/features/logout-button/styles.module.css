@@ -1,0 +1,19 @@
+.logoutBtn {
+    padding: .625rem 1rem;
+    border-radius: 8px;
+    font-family: Roboto, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    color: #FF5500;
+    background-color: transparent;
+    cursor: pointer;
+    border: solid 1px #FF5500;
+
+}
+
+.logoutBtn:active {
+    outline: none;
+}
+

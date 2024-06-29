@@ -1,0 +1,16 @@
+.filterForm {
+    padding: 24px;
+    gap: 20px;
+    border-radius: 8px;
+    background: white;
+    color: #1B1F23;
+}
+
+.filterForm .title {
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+    margin-bottom: 1rem;
+}

@@ -29,7 +29,7 @@
     height: 16px;
 }
 
-.loginForm .inputLabel {
+.loginForm .selectLabel {
     font-family: Inter, sans-serif;
     font-size: 14px;
     font-weight: 400;
@@ -37,7 +37,7 @@
     text-align: left;
 }
 
-.loginForm .inputLabel:after {
+.loginForm .selectLabel:after {
     content: "*";
     font-family: "SF Pro T", sans-serif;
     font-size: 14px;
