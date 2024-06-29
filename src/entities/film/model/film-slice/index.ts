@@ -32,9 +32,13 @@ const filmSlice = createSlice<FilmState>({
         updateReleaseYearFilter: (state: FilmState, action: PayloadAction<YearsFilter>) => {
             state.releaseYearFilter = action.payload;
         },
+
+        updateTitleFilter: (state: FilmState, action: PayloadAction<string>) => {
+            state.titleFilter = action.payload;
+        },
     }
 });
 
 export default filmSlice.reducer;
 
-export const {updateGenreFilter, updateReleaseYearFilter} = filmSlice.actions;
+export const {updateGenreFilter, updateReleaseYearFilter, updateTitleFilter} = filmSlice.actions;

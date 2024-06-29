@@ -29,8 +29,14 @@ export const apiSlice = createApi({
         return headers
     },
     endpoints: ({query, mutation}) => ({
-        getSearchFilms: query<SearchFilmsResponse, void>({
-            query: () => ({ url: "/search" })
+        getSearchFilms: query<SearchFilmsResponse, { title?: string, genre?: string, release_year?: string }>({
+            query: ({ title = "", genre = "", release_year = "" }) => {
+                const params = new URLSearchParams();
+                if (title) params.append("title", title);
+                if (genre) params.append("genre", genre);
+                if (release_year) params.append("release_year", release_year);
+                return { url: `/search?${params.toString()}` };
+            }
         }),
         getFilmById: query<FullMovieInfo, number>({
             query: (id) => {

@@ -5,14 +5,40 @@ import { Loading } from "@/shared/ui/loading";
 import styles from "./styles.module.css";
 import { FilmFilter } from "@/features/film-filter";
 import { FilmSearch } from "@/features/film-search";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { updateGenreFilter, updateReleaseYearFilter, updateTitleFilter } from "@/entities/film/model/film-slice";
+import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 
 export function FilmsListPage() {
 
-    const { data, isLoading, error }: {
+    const dispatch = useAppDispatch();
+
+    const [searchParams, ] = useSearchParams();
+
+    const titleFilter = useAppSelector(state => state.film.titleFilter);
+    const genreFilter = useAppSelector(state => state.film.genreFilter);
+    const releaseYearFilter = useAppSelector(state => state.film.releaseYear);
+
+    useEffect(() => {
+        dispatch(updateTitleFilter(searchParams.get("title") || ""));
+        dispatch(updateGenreFilter(searchParams.get("genre") || ""));
+        dispatch(updateReleaseYearFilter(searchParams.get("release_year") || ""));
+    }, [dispatch, searchParams]);
+
+    const { data, isLoading, refetch, error }: {
         data: SearchFilmsResponse,
         isLoading: boolean,
-        error: Error
-    } = useGetSearchFilmsQuery();
+        error: Error,
+    } = useGetSearchFilmsQuery({
+        title: searchParams.get("title") || "",
+        genre: searchParams.get("genre") || "",
+        release_year: searchParams.get("release_year") || ""
+    });
+
+    useEffect(() => {
+        refetch();
+    }, [titleFilter, genreFilter, releaseYearFilter, refetch]);
 
     if (isLoading) {
         return <Loading/>;
