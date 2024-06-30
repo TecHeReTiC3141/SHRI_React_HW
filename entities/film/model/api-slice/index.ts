@@ -1,11 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { FullMovieInfo, ShortMovieInfo } from "@/shared/api/films";
 import { RootState } from "@/entities/film/model";
 
-export interface SearchFilmsResponse {
-    search_result: ShortMovieInfo[];
-    total_pages: number;
-}
 
 export interface LoginRequest {
     username: string;
@@ -43,28 +38,7 @@ export const apiSlice = createApi({
         },
     }),
 
-    endpoints: ({ query, mutation }) => ({
-        getSearchFilms: query<SearchFilmsResponse, {
-            title?: string,
-            genre?: string,
-            release_year?: string,
-            page?: number
-        }>({
-            query: ({ title = "", genre = "", release_year = "", page = 1 }) => {
-                const params = new URLSearchParams();
-                if (title) params.append("title", title);
-                if (genre) params.append("genre", genre);
-                if (release_year) params.append("release_year", release_year);
-                if (page) params.append("page", page.toString());
-                return { url: `/search?${params.toString()}` };
-            }
-        }),
-        getFilmById: query<FullMovieInfo, number>({
-            query: (id) => {
-                console.log("in getFilmById", id);
-                return `/movie/${id}`;
-            },
-        }),
+    endpoints: ({ mutation }) => ({
         login: mutation<LoginRequest, LoginResponse>({
             query: (request: LoginRequest) => ({
                 url: "/login",
@@ -81,4 +55,4 @@ export const apiSlice = createApi({
         }),
     })
 });
-export const { useGetSearchFilmsQuery, useGetFilmByIdQuery, useLoginMutation, useRateMovieMutation } = apiSlice;
+export const { useLoginMutation, useRateMovieMutation } = apiSlice;

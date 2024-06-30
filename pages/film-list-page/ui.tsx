@@ -1,6 +1,6 @@
 "use client"
 
-import { SearchFilmsResponse } from "@/entities/film/model/api-slice";
+import { SearchFilmsResponse } from "@/app/(home)/actions";
 import { FilmRow } from "@/entities/film/ui/film-row";
 
 import styles from "./styles.module.css";
@@ -75,8 +75,8 @@ export function FilmsListPage({ filmsData }: FilmsListPageProps) {
     }
 
     useEffect(() => {
-        router.push(pathname + '?' + createQueryString("page", filmPage), {scroll: false});
-    }, [createQueryString, filmPage, pathname, router]);
+        router.push(pathname + '?' + createQueryString("page", filmPage), { scroll: false });
+    }, [ createQueryString, filmPage, pathname, router ]);
 
     return (
         <>

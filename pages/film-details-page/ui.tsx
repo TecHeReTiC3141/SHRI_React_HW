@@ -1,7 +1,5 @@
 "use client"
 
-import { useGetFilmByIdQuery } from "@/entities/film/model/api-slice";
-import { Loading } from "@/shared/ui/loading";
 import { FilmCard } from "@/entities/film/ui/film-card";
 import { ActorsGallery } from "@/entities/film/ui/actors-gallery";
 import { FullMovieInfo } from "@/shared/api/films";
@@ -24,8 +22,11 @@ import { useParams } from "next/navigation";
 
 const ACTORS_ON_PAGE = 8;
 
-export function FilmDetailsPage() {
+interface FilmDetailsPageProps {
+    filmData: FullMovieInfo,
+}
 
+export function FilmDetailsPage({filmData}: FilmDetailsPageProps) {
     const dispatch = useAppDispatch();
 
     const film: FullMovieInfo = useAppSelector(state => state.film.film);
@@ -41,19 +42,13 @@ export function FilmDetailsPage() {
     useEffect(() => {
         dispatch(updateActorsShift(0));
     }, [ dispatch, filmId ]);
-
-    const { data, isLoading, error }: {
-        data: FullMovieInfo,
-        isLoading: boolean,
-        error: { data: string }
-    } = useGetFilmByIdQuery(filmId);
-
+    
     useEffect(() => {
-        document.title = data?.title || "Loading...";
-        if (data) {
-            dispatch(updateFilm(data));
+        document.title = filmData?.title || "Loading...";
+        if (filmData) {
+            dispatch(updateFilm(filmData));
         }
-    }, [ data, dispatch ]);
+    }, [ filmData, dispatch ]);
 
     function shiftLeft() {
         dispatch(decrementActorsShift())
@@ -63,12 +58,10 @@ export function FilmDetailsPage() {
         dispatch(incrementActorsShift())
     }
 
-    if (isLoading || !film) {
-        return <Loading/>;
+    if (!film) {
+        return null;
     }
-    if (error) {
-        console.error(filmId, error);
-    }
+
     return (
         <div className={styles.page}>
             <FilmCard film={film} action={isAuthed ? <StarRating
