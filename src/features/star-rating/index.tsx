@@ -21,7 +21,7 @@ export function StarRating({ rating, disabled, className, movieId }: StarRatingP
 
     const [ value, setValue ] = useState<number>(rating);
     const [ hoveredValue, setHoveredValue ] = useState<number>(-1);
-    const [ debouncedRating, setDebouncedRating ] = useState<number>(value);
+    const [ debouncedRating, setDebouncedRating ] = useState<number>(-1);
 
     const [ rateMovie ] = useRateMovieMutation();
 
@@ -67,14 +67,14 @@ export function StarRating({ rating, disabled, className, movieId }: StarRatingP
 
     useEffect(() => {
         const handler = setTimeout(async () => {
-            if (disabled) return;
+            if (disabled || debouncedRating === -1) return;
             await handleRatingSubmit(debouncedRating);
         }, DEBOUNCE_DELAY);
 
         return () => {
             clearTimeout(handler);
         };
-    }, [ handleRatingSubmit, debouncedRating, value ]);
+    }, [handleRatingSubmit, debouncedRating, value, disabled]);
 
     return (
         <div className={classNames(styles.rating, className)} onMouseLeave={() => setHoveredValue(-1)}>

@@ -9,6 +9,7 @@
 }
 
 .gallery {
+    overflow-x: hidden;
     display: flex;
     column-gap: 1.5rem;
     position: relative;

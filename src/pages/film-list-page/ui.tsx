@@ -52,6 +52,10 @@ export function FilmsListPage() {
     });
 
     useEffect(() => {
+        document.title = "Фильмопоиск";
+    }, []);
+
+    useEffect(() => {
         refetch();
     }, [ titleFilter, genreFilter, releaseYearFilter, refetch, filmPage ]);
 

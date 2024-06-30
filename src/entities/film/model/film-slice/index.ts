@@ -49,7 +49,16 @@ const filmSlice = createSlice<FilmState>({
                 }
                 return film;
             });
-        }
+        },
+        updateActorsShift: (state: FilmState, action: PayloadAction<number>) => {
+            state.actorsShift = action.payload;
+        },
+        decrementActorsShift: (state: FilmState) => {
+            --state.actorsShift;
+        },
+        incrementActorsShift: (state: FilmState) => {
+            ++state.actorsShift;
+        },
     }
 });
 
@@ -59,4 +68,7 @@ export const {
     updateFilmList,
     updateFilm,
     updateFilmRating,
+    updateActorsShift,
+    decrementActorsShift,
+    incrementActorsShift,
 } = filmSlice.actions;

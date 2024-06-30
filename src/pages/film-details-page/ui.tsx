@@ -12,7 +12,14 @@ import { StarRating } from "@/features/star-rating";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 import { selectIsAuthed, selectUserMarks } from "@/entities/film/model/auth-slice";
 import { useEffect } from "react";
-import { updateFilm } from "@/entities/film/model/film-slice";
+import {
+    decrementActorsShift,
+    incrementActorsShift,
+    updateActorsShift,
+    updateFilm
+} from "@/entities/film/model/film-slice";
+
+const ACTORS_ON_PAGE = 8;
 
 export function FilmDetailsPage() {
 
@@ -20,11 +27,20 @@ export function FilmDetailsPage() {
 
     const film: FullMovieInfo = useAppSelector(state => state.film.film);
 
-    const userMarks: {[key: string]: number} = useAppSelector(selectUserMarks);
+    const actorsShift = useAppSelector(state => state.film.actorsShift);
+
+    // TODO: remove tripling of actors
+    const galleryActors = film?.actors.concat(film.actors).concat(film.actors);
+
+    const userMarks: { [ key: string ]: number } = useAppSelector(selectUserMarks);
 
     const { id } = useParams<{ id: number }>();
 
     const isAuthed = useAppSelector(selectIsAuthed);
+
+    useEffect(() => {
+        dispatch(updateActorsShift(0));
+    }, [ dispatch, id ]);
 
     const { data, isLoading, error }: {
         data: FullMovieInfo,
@@ -37,7 +53,15 @@ export function FilmDetailsPage() {
         if (data) {
             dispatch(updateFilm(data));
         }
-    }, [data, dispatch]);
+    }, [ data, dispatch ]);
+
+    function shiftLeft() {
+        dispatch(decrementActorsShift())
+    }
+
+    function shiftRight() {
+        dispatch(incrementActorsShift())
+    }
 
     if (isLoading || !film) {
         return <Loading/>;
@@ -45,18 +69,18 @@ export function FilmDetailsPage() {
     if (error) {
         console.error(id, error);
     }
-    console.log(userMarks, userMarks[film.id] ?? Math.round( +film.rating));
     return (
         <div className={styles.page}>
             <FilmCard film={film} action={isAuthed ? <StarRating
-                disabled={false} rating={userMarks[film.id] ?? Math.round( +film.rating)}
+                disabled={false} rating={userMarks[ film.id ] ?? Math.round(+film.rating)}
                 className={styles.actionButton} movieId={film.id}/> : null}
             />
-            <ActorsGallery actors={film.actors}
-                           leftShifter={<Shifter disabled={false} onClick={() => console.log("Left")}
+            <ActorsGallery actors={galleryActors || []} shift={actorsShift}
+                           leftShifter={<Shifter disabled={actorsShift === 0} onClick={shiftLeft}
                                                  className={styles.shifterLeft}
                                                  icon={<ArrowLeft width={16} height={16}/>}/>}
-                           rightShifter={<Shifter disabled={false} onClick={() => console.log("Right")}
+                           rightShifter={<Shifter disabled={actorsShift + ACTORS_ON_PAGE >= galleryActors?.length}
+                                                  onClick={shiftRight}
                                                   className={styles.shifterRight}
                                                   icon={<ArrowRight width={16} height={16}/>}/>}/>
         </div>
