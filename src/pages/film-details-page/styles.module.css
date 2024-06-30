@@ -15,6 +15,10 @@
     left: 0;
 }
 
+.shifterDisabled {
+    display: none;
+}
+
 .shifterRight {
     position: absolute;
     top: 50%;

@@ -18,6 +18,7 @@ import {
     updateActorsShift,
     updateFilm
 } from "@/entities/film/model/film-slice";
+import classNames from "classnames";
 
 const ACTORS_ON_PAGE = 8;
 
@@ -28,9 +29,6 @@ export function FilmDetailsPage() {
     const film: FullMovieInfo = useAppSelector(state => state.film.film);
 
     const actorsShift = useAppSelector(state => state.film.actorsShift);
-
-    // TODO: remove tripling of actors
-    const galleryActors = film?.actors.concat(film.actors).concat(film.actors);
 
     const userMarks: { [ key: string ]: number } = useAppSelector(selectUserMarks);
 
@@ -75,13 +73,13 @@ export function FilmDetailsPage() {
                 disabled={false} rating={userMarks[ film.id ] ?? Math.round(+film.rating)}
                 className={styles.actionButton} movieId={film.id}/> : null}
             />
-            <ActorsGallery actors={galleryActors || []} shift={actorsShift}
+            <ActorsGallery actors={film?.actors || []} shift={actorsShift}
                            leftShifter={<Shifter disabled={actorsShift === 0} onClick={shiftLeft}
-                                                 className={styles.shifterLeft}
+                                                 className={classNames(actorsShift === 0 ? styles.shifterDisabled : styles.shifterLeft)}
                                                  icon={<ArrowLeft width={16} height={16}/>}/>}
-                           rightShifter={<Shifter disabled={actorsShift + ACTORS_ON_PAGE >= galleryActors?.length}
+                           rightShifter={<Shifter disabled={actorsShift + ACTORS_ON_PAGE >= film?.actors?.length}
                                                   onClick={shiftRight}
-                                                  className={styles.shifterRight}
+                                                  className={classNames(actorsShift + ACTORS_ON_PAGE >= film?.actors?.length ? styles.shifterDisabled : styles.shifterRight)}
                                                   icon={<ArrowRight width={16} height={16}/>}/>}/>
         </div>
     );
