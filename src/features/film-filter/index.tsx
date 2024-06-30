@@ -18,7 +18,7 @@ export function FilmFilter() {
     function handleGenreSelect(genre: GenresEnglish) {
         dispatch(updateGenreFilter(genre));
         setSearchParams(prev => {
-            if (genre) {
+            if (genre && genre !== "0") {
                 prev.set("genre", genre);
             } else {
                 prev.delete("genre");

@@ -42,7 +42,7 @@ export const apiSlice = createApi({
             return headers;
         },
     }),
-
+    tagTypes: [ "Films" ],
     endpoints: ({ query, mutation }) => ({
         getSearchFilms: query<SearchFilmsResponse, {
             title?: string,
@@ -57,13 +57,14 @@ export const apiSlice = createApi({
                 if (release_year) params.append("release_year", release_year);
                 if (page) params.append("page", page.toString());
                 return { url: `/search?${params.toString()}` };
-            }
+            },
         }),
         getFilmById: query<FullMovieInfo, number>({
             query: (id) => {
                 console.log("in getFilmById", id);
                 return `/movie/${id}`;
             },
+            providesTags: (result: FullMovieInfo) => [ { type: "Films", id: result.id } ],
         }),
         login: mutation<LoginRequest, LoginResponse>({
             query: (request: LoginRequest) => ({
@@ -73,11 +74,12 @@ export const apiSlice = createApi({
             }),
         }),
         rateMovie: mutation<RateMovieRequest, RateMovieRequest>({
-            query: (request: LoginRequest) => ({
+            query: (request: RateMovieRequest) => ({
                 url: "/rateMovie",
                 method: "POST",
                 body: request,
             }),
+            invalidatesTags: (result, error, arg) => [ { type: 'Films', id: arg.movieId } ],
         }),
     })
 });
