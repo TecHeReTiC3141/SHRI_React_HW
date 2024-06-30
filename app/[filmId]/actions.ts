@@ -6,7 +6,7 @@ export type FilmByIdResponse = FullMovieInfo | { error: string };
 
 export async function getFilmById(id: string) {
     try {
-        const response = await fetch(`http://localhost:3030/api/v1/movie/${id}`);
+        const response = await fetch(`http://localhost:3030/api/v1/movie/${id}`, { cache: "no-store", });
         return await response.json() as FilmByIdResponse;
     } catch (error) {
         console.error(error.message);

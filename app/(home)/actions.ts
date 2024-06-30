@@ -15,7 +15,7 @@ export async function getFilms({ title = "", genre = "", release_year = "", page
     if (page) params.append("page", page.toString());
     try {
 
-        const response = await fetch(`http://localhost:3030/api/v1/search?${params.toString()}`);
+        const response = await fetch(`http://localhost:3030/api/v1/search?${params.toString()}`, { cache: "no-store", });
         return await response.json() as SearchFilmsResponse;
     } catch (error) {
         console.error(error.message);
