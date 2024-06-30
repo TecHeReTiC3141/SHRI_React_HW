@@ -12,7 +12,7 @@ interface FilmRowProps {
 export function FilmRow({ film }: FilmRowProps) {
     return (
         <Link href={`/${film.id}`} className={styles.filmRow}>
-            <Image width={320} height={400} src={film.poster} alt={film.title} className={styles.filmRowImage}/>
+            <Image loading="lazy" width={320} height={400} src={film.poster} alt={film.title} className={styles.filmRowImage}/>
             <div>
                 <h3 className={styles.filmRowTitle}>{film.title}</h3>
                 <div className={styles.filmRowInfo}>

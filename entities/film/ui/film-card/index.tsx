@@ -12,7 +12,7 @@ interface FilmCardProps {
 export function FilmCard({ film, action }: FilmCardProps) {
     return (
         <div className={styles.filmCard}>
-            <Image src={film.poster} alt={film.title} width={480} height={600} className={styles.poster}/>
+            <Image src={film.poster} loading="lazy" alt={film.title} width={480} height={600} className={styles.poster}/>
             <div>
                 <h3 className={styles.title}>{film.title}</h3>
                 <p className={styles.line}><span className={styles.label}>Жанр: </span>{film.genre}</p>
