@@ -15,7 +15,6 @@ export function MainLayout() {
 
     const dispatch = useAppDispatch();
 
-    const token = useAppSelector((state: RootState) => state.auth.token);
     const isAuthed: boolean = useAppSelector(selectIsAuthed);
     const isModalVisible = useAppSelector((state: RootState) => state.auth.isLoginModalVisible);
 

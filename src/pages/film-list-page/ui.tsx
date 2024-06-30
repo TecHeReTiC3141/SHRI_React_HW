@@ -10,13 +10,13 @@ import { useEffect } from "react";
 import {
     nextPage,
     prevPage,
-    updateFilmList,
     updateFilmPage,
     updateGenreFilter,
     updateReleaseYearFilter,
     updateTitleFilter,
     updateTotalPages
-} from "@/entities/film/model/film-slice";
+} from "@/entities/film/model/filter-slice";
+import { updateFilmList, } from "@/entities/film/model/film-slice";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 import { Shifter } from "@/features/shifters";
 import { ArrowLeft, ArrowRight } from "@/shared/ui/icons";
@@ -28,11 +28,11 @@ export function FilmsListPage() {
 
     const [ searchParams, ] = useSearchParams();
 
-    const titleFilter = useAppSelector(state => state.film.titleFilter);
-    const genreFilter = useAppSelector(state => state.film.genreFilter);
-    const releaseYearFilter = useAppSelector(state => state.film.releaseYear);
-    const filmPage = useAppSelector(state => state.film.filmPage);
-    const totalPages = useAppSelector(state => state.film.totalPages);
+    const titleFilter = useAppSelector(state => state.filter.titleFilter);
+    const genreFilter = useAppSelector(state => state.filter.genreFilter);
+    const releaseYearFilter = useAppSelector(state => state.filter.releaseYear);
+    const filmPage = useAppSelector(state => state.filter.filmPage);
+    const totalPages = useAppSelector(state => state.filter.totalPages);
 
     useEffect(() => {
         dispatch(updateTitleFilter(searchParams.get("title") || ""));

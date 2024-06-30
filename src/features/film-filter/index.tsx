@@ -2,7 +2,7 @@ import styles from "./styles.module.css";
 import { GENRES_MAP, GenresEnglish, YEARS, YearsFilter } from "@/shared/api/films";
 import { SelectField } from "@/shared/ui/select";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
-import { updateGenreFilter, updateReleaseYearFilter } from "@/entities/film/model/film-slice";
+import { updateGenreFilter, updateReleaseYearFilter } from "@/entities/film/model/filter-slice";
 import { useSearchParams } from "react-router-dom";
 
 export function FilmFilter() {

@@ -3,7 +3,7 @@ import { MagnifyingGlass } from "@/shared/ui/icons";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 import { useSearchParams } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
-import { updateTitleFilter } from "@/entities/film/model/film-slice";
+import { updateTitleFilter } from "@/entities/film/model/filter-slice";
 
 
 const DEBOUNCE_DELAY = 300;

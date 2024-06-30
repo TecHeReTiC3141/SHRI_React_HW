@@ -6,6 +6,7 @@ import { clearForm, closeModal, createToken, updateName, updatePassword } from "
 import { Xmark } from "@/shared/ui/icons";
 import { FormEvent } from "react";
 import { LoginResponse, useLoginMutation } from "@/entities/film/model/api-slice";
+import { UnknownAction } from "@reduxjs/toolkit";
 
 export function LoginForm() {
     const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ export function LoginForm() {
             }).unwrap();
             console.log(response);
             if (response.token) {
-                dispatch(createToken(response.token));
+                dispatch(createToken(response.token) as UnknownAction);
                 closeForm();
             } else {
                 console.error(response.error);

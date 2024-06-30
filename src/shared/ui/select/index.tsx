@@ -12,6 +12,7 @@ interface SelectFieldProps {
 }
 
 export function SelectField({ name, labelText, options, value, onSelect }: SelectFieldProps) {
+    console.log(name, value);
     const [ isOpened, setIsOpened ] = useState<boolean>(false);
     const selectRef = useRef<HTMLSelectElement | null>(null);
     // TODO: implement styling for select options

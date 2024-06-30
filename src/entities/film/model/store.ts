@@ -1,6 +1,7 @@
 import { AnyAction, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
 import FilmReducer from "@/entities/film/model/film-slice";
 import AuthReducer from "@/entities/film/model/auth-slice";
+import FilterReducer from "@/entities/film/model/filter-slice";
 import { apiSlice } from "@/entities/film/model/api-slice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,7 +9,8 @@ export const store = configureStore({
     reducer: {
         film: FilmReducer,
         auth: AuthReducer,
-        [apiSlice.reducerPath]: apiSlice.reducer,
+        filter: FilterReducer,
+        [apiSlice.reducerPath!]: apiSlice.reducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware),
 });
