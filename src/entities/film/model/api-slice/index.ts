@@ -17,26 +17,45 @@ export interface LoginResponse {
     error?: string;
 }
 
+export interface RateMovieRequest {
+    movieId: string;
+    user_rate: number;
+}
+
+export interface RateMovieResponse {
+    movieId?: string,
+    newAverageRate?: string,
+    newTotalRatesCount?: number,
+    error?: string,
+}
+
 export const apiSlice = createApi({
     reducerPath: "apiSlice",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3030/api/v1" }),
-    prepareHeaders: (headers, {getState}) => {
-        const token = (getState() as RootState).auth.token
-        if (token) {
-            headers.set('x-access-token', `${token}`)
-        }
-        headers.set("content-type", "application/json");
-        return headers
-    },
-    endpoints: ({query, mutation}) => ({
-        getSearchFilms: query<SearchFilmsResponse, { title?: string, genre?: string, release_year?: string, page?: number }>({
+    baseQuery: fetchBaseQuery({
+        baseUrl: "http://localhost:3030/api/v1",
+        prepareHeaders: (headers, { getState }) => {
+            const token = (getState() as RootState).auth.token;
+            if (token) {
+                headers.set("Authorization", `Bearer ${token}`);
+            }
+            headers.set("content-type", "application/json");
+            return headers;
+        },
+    }),
+
+    endpoints: ({ query, mutation }) => ({
+        getSearchFilms: query<SearchFilmsResponse, {
+            title?: string,
+            genre?: string,
+            release_year?: string,
+            page?: number
+        }>({
             query: ({ title = "", genre = "", release_year = "", page = 1 }) => {
                 const params = new URLSearchParams();
                 if (title) params.append("title", title);
                 if (genre) params.append("genre", genre);
                 if (release_year) params.append("release_year", release_year);
                 if (page) params.append("page", page.toString());
-                console.log(page.toString());
                 return { url: `/search?${params.toString()}` };
             }
         }),
@@ -46,13 +65,20 @@ export const apiSlice = createApi({
                 return `/movie/${id}`;
             },
         }),
-        login: mutation<LoginRequest, LoginRequest>({
+        login: mutation<LoginRequest, LoginResponse>({
             query: (request: LoginRequest) => ({
                 url: "/login",
                 method: "POST",
                 body: request,
             }),
-        })
+        }),
+        rateMovie: mutation<RateMovieRequest, RateMovieRequest>({
+            query: (request: LoginRequest) => ({
+                url: "/rateMovie",
+                method: "POST",
+                body: request,
+            }),
+        }),
     })
 });
-export const { useGetSearchFilmsQuery, useGetFilmByIdQuery, useLoginMutation } = apiSlice;
+export const { useGetSearchFilmsQuery, useGetFilmByIdQuery, useLoginMutation, useRateMovieMutation } = apiSlice;

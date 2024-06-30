@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FullMovieInfo, GenresEnglish, ShortMovieInfo, YearsFilter } from "@/shared/api/films";
+import { RateMovieResponse } from "@/entities/film/model/api-slice";
 
 interface FilmState {
     filmList: ShortMovieInfo[];
@@ -30,8 +31,6 @@ const initialState: FilmState = {
     actorsShift: 0,
 };
 
-const FILMS_PER_PAGE = 5;
-
 const filmSlice = createSlice<FilmState>({
     name: "film",
     initialState,
@@ -44,6 +43,10 @@ const filmSlice = createSlice<FilmState>({
         },
         updateTitleFilter: (state: FilmState, action: PayloadAction<string>) => {
             state.titleFilter = action.payload;
+        },
+
+        updateFilm: (state: FilmState, action: PayloadAction<FullMovieInfo>) => {
+            state.film = action.payload;
         },
         prevPage: (state: FilmState) => {
             state.filmPage = Math.max(state.filmPage - 1, 0);
@@ -60,6 +63,25 @@ const filmSlice = createSlice<FilmState>({
         updateTotalPages: (state: FilmState, action: PayloadAction<number>) => {
             state.totalPages = action.payload;
         },
+        updateFilmRating: (state: FilmState, action: PayloadAction<Required<Omit<RateMovieResponse, "error">>> ) => {
+            if (state.film) {
+                state.film = {
+                    ...state.film,
+                    rating: action.payload.newAverageRate.toString(),
+                    total_rates_count: action.payload.newTotalRatesCount.toString(),
+                }
+            }
+            state.filmList = state.filmList.map((film) => {
+                if (film.id === action.payload.movieId) {
+                    return {
+                        ...film,
+                        rating: action.payload.newAverageRate.toString(),
+                        total_rates_count: action.payload.newTotalRatesCount,
+                    };
+                }
+                return film;
+            });
+        }
     }
 });
 
@@ -74,4 +96,6 @@ export const {
     nextPage,
     updateTotalPages,
     updateFilmPage,
+    updateFilm,
+    updateFilmRating,
 } = filmSlice.actions;

@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface AuthState {
     token: string;
     authError: string;
+    userMarks: { [ key: string ]: number };
     isLoginModalVisible: boolean;
     nameField: string;
     passwordField: string;
@@ -12,6 +13,7 @@ interface AuthState {
 const initialState: AuthState = {
     token: "",
     authError: "",
+    userMarks: {},
     nameField: "",
     passwordField: "",
     isLoginModalVisible: false,
@@ -42,6 +44,8 @@ export const authSlice = createSlice<AuthState>({
         selectToken: (sliceState: AuthState) => sliceState.token,
         selectIsAuthed: (sliceState: AuthState) => sliceState.token !== "",
         selectError: (sliceState: AuthState) => sliceState.authError,
+        selectUserMarks: (sliceState: AuthState) => sliceState.userMarks,
+        selectUserMarkById: (sliceState: AuthState, movieId: string) => sliceState.userMarks[movieId],
     },
     extraReducers: builder => builder
         .addCase(createToken.fulfilled, (state, { payload }) => {
@@ -50,6 +54,10 @@ export const authSlice = createSlice<AuthState>({
             state.token = payload;
         }).addCase(deleteToken.fulfilled, (state) => {
             state.token = "";
+        }).addCase(getUserMarks.fulfilled, (state, { payload }) => {
+            state.userMarks = payload as { [ key: string ]: number };
+        }).addCase(setUserMark.fulfilled, (state, { payload }) => {
+            state.userMarks = payload as { [ key: string ]: number };
         }).addMatcher(
             ({ type }) => type.endsWith("/rejected"),
             (state) => {
@@ -61,7 +69,6 @@ export const authSlice = createSlice<AuthState>({
 export const createToken = createAsyncThunk(
     "auth/createToken",
     (token: string) => {
-        console.log(token);
         localStorage.setItem("token", token);
         return localStorage.getItem("token");
     },
@@ -81,8 +88,25 @@ export const deleteToken = createAsyncThunk(
     },
 );
 
+export const getUserMarks = createAsyncThunk(
+    "auth/getUserMarks",
+    () => {
+        return JSON.parse(localStorage.getItem("userMarks")) || {};
+    }
+)
+
+export const setUserMark = createAsyncThunk(
+    "auth/setUserMark",
+    ({ movieId, mark }: { movieId: string, mark: number }) => {
+        const marks = JSON.parse(localStorage.getItem("userMarks")) ?? {};
+        marks[ movieId ] = mark;
+        localStorage.setItem("userMarks", JSON.stringify(marks));
+        return marks;
+    }
+);
+
 export default authSlice.reducer;
 
 export const { openModal, closeModal, updateName, updatePassword, clearForm } = authSlice.actions;
 
-export const {selectIsAuthed} = authSlice.selectors;
+export const { selectIsAuthed, selectUserMarks, selectUserMarkById } = authSlice.selectors;

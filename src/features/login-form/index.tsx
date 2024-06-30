@@ -11,7 +11,6 @@ export function LoginForm() {
     const dispatch = useAppDispatch();
 
     const [ login ] = useLoginMutation();
-    // TODO: when modal is opened, disable scroll
 
     const username = useAppSelector((state) => state.auth.nameField);
     const password = useAppSelector((state) => state.auth.passwordField);

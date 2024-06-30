@@ -28,7 +28,7 @@ export function FilmRow({ film }: FilmRowProps) {
                         <p>{film.description}</p>
                     </div>
                 </div>
-                <StarRating disabled={true} rating={Math.round(+film.rating)} className={styles.rating}/>
+                <StarRating disabled={true} rating={Math.round(+film.rating)} className={styles.rating} movieId={film.id}/>
             </div>
         </Link>
     );
