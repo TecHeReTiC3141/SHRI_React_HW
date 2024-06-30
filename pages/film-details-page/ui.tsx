@@ -1,3 +1,5 @@
+"use client"
+
 import { useGetFilmByIdQuery } from "@/entities/film/model/api-slice";
 import { Loading } from "@/shared/ui/loading";
 import { FilmCard } from "@/entities/film/ui/film-card";
@@ -18,6 +20,7 @@ import {
     updateFilm
 } from "@/entities/film/model/film-slice";
 import classNames from "classnames";
+import { useParams } from "next/navigation";
 
 const ACTORS_ON_PAGE = 8;
 
@@ -31,19 +34,19 @@ export function FilmDetailsPage() {
 
     const userMarks: { [ key: string ]: number } = useAppSelector(selectUserMarks);
 
-    const { id } = useParams<{ id: number }>();
+    const { filmId } = useParams();
 
     const isAuthed = useAppSelector(selectIsAuthed);
 
     useEffect(() => {
         dispatch(updateActorsShift(0));
-    }, [ dispatch, id ]);
+    }, [ dispatch, filmId ]);
 
     const { data, isLoading, error }: {
         data: FullMovieInfo,
         isLoading: boolean,
         error: { data: string }
-    } = useGetFilmByIdQuery(id);
+    } = useGetFilmByIdQuery(filmId);
 
     useEffect(() => {
         document.title = data?.title || "Loading...";
@@ -64,7 +67,7 @@ export function FilmDetailsPage() {
         return <Loading/>;
     }
     if (error) {
-        console.error(id, error);
+        console.error(filmId, error);
     }
     return (
         <div className={styles.page}>

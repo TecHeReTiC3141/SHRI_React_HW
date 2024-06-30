@@ -23,12 +23,14 @@ const filterSlice = createSlice<FilterState>({
     reducers: {
         updateGenreFilter: (state: FilterState, action: PayloadAction<GenresEnglish>) => {
             state.genreFilter = action.payload;
+            state.filmPage = 1;
         },
         updateReleaseYearFilter: (state: FilterState, action: PayloadAction<YearsFilter>) => {
             state.releaseYearFilter = action.payload;
+            state.filmPage = 1;
         },
         updateTitleFilter: (state: FilterState, action: PayloadAction<string>) => {
-            console.log("update title", action.payload);
+            state.filmPage = 1;
             state.titleFilter = action.payload;
         },
         prevPage: (state: FilterState) => {

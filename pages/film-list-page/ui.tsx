@@ -1,13 +1,10 @@
 "use client"
 
-import { SearchFilmsResponse, useGetSearchFilmsQuery } from "@/entities/film/model/api-slice";
+import { SearchFilmsResponse } from "@/entities/film/model/api-slice";
 import { FilmRow } from "@/entities/film/ui/film-row";
-import { Loading } from "@/shared/ui/loading";
 
 import styles from "./styles.module.css";
-import { FilmFilter } from "@/features/film-filter";
-import { FilmSearch } from "@/features/film-search";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
     nextPage,
     prevPage,
@@ -22,9 +19,16 @@ import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 import { Shifter } from "@/features/shifters";
 import { ArrowLeft, ArrowRight } from "@/shared/ui/icons";
 import { NoFilmsFound } from "@/entities/film/ui/no-films-found";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { setSearchParams } from "@/shared/utils";
 
-export function FilmsListPage() {
+interface FilmsListPageProps {
+    filmsData: SearchFilmsResponse,
+}
+
+export function FilmsListPage({ filmsData }: FilmsListPageProps) {
+    const router = useRouter();
+    const pathname = usePathname();
 
     const dispatch = useAppDispatch();
 
@@ -36,42 +40,31 @@ export function FilmsListPage() {
     const filmPage = useAppSelector(state => state.filter.filmPage);
     const totalPages = useAppSelector(state => state.filter.totalPages);
 
+    const createQueryString = useCallback(
+        (name, value) => setSearchParams(searchParams, name, value),
+        [ searchParams ]
+    );
+
     useEffect(() => {
+        console.log("page", searchParams.get("page"));
         dispatch(updateTitleFilter(searchParams.get("title") || ""));
         dispatch(updateGenreFilter(searchParams.get("genre") || ""));
         dispatch(updateReleaseYearFilter(searchParams.get("release_year") || ""));
+        dispatch(updateFilmPage(+(searchParams.get("page") || "1")));
     }, [ dispatch, searchParams ]);
-
-    const { data, isLoading, refetch, error }: {
-        data: SearchFilmsResponse,
-        isLoading: boolean,
-        error: Error,
-    } = useGetSearchFilmsQuery({
-        title: searchParams.get("title") || "",
-        genre: searchParams.get("genre") || "",
-        release_year: searchParams.get("release_year") || "",
-        page: filmPage,
-    });
 
     useEffect(() => {
         document.title = "Фильмопоиск";
     }, []);
 
-    useEffect(() => {
-        refetch();
-    }, [ titleFilter, genreFilter, releaseYearFilter, refetch, filmPage ]);
 
     useEffect(() => {
-        if (data) {
-            console.log(data);
-            dispatch(updateFilmList(data.search_result));
-            dispatch(updateTotalPages(data.total_pages));
+        if (filmsData) {
+            console.log(filmsData);
+            dispatch(updateFilmList(filmsData.search_result));
+            dispatch(updateTotalPages(filmsData.total_pages));
         }
-    }, [ data, data?.search_result, dispatch ]);
-
-    useEffect(() => {
-        dispatch(updateFilmPage(1));
-    }, [ searchParams, dispatch ]);
+    }, [ filmsData, filmsData?.search_result, dispatch ]);
 
     function handleNextPage() {
         dispatch(nextPage());
@@ -81,17 +74,16 @@ export function FilmsListPage() {
         dispatch(prevPage());
     }
 
-    if (error) {
-        throw new Error("Error:" + error);
-    }
+    useEffect(() => {
+        router.push(pathname + '?' + createQueryString("page", filmPage), {scroll: false});
+    }, [createQueryString, filmPage, pathname, router]);
+
     return (
-        <div className={styles.filmListPage}>
-            <FilmFilter/>
-            <div className={styles.filmList}>
-                <FilmSearch/>
-                {isLoading ? <Loading/> : data.search_result.length === 0 ? <NoFilmsFound/> :
+        <>
+            {
+                filmsData.search_result.length === 0 ? <NoFilmsFound/> :
                     <>
-                        {data.search_result.map((film) => (
+                        {filmsData.search_result.map((film) => (
                             <FilmRow key={film.id} film={film} action={<div>Action</div>}/>
                         ))}
                         <div className={styles.pagination}>
@@ -102,11 +94,10 @@ export function FilmsListPage() {
                                      icon={<ArrowRight width={16} height={16}/>}/>
                         </div>
                     </>
-                }
-            </div>
-        </div>
+            }
+        </>
 
-    )
-        ;
+
+    );
 
 }
