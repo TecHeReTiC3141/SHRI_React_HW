@@ -1,4 +1,8 @@
-
+.selectContainer {
+    position: relative;
+    min-width: 360px;
+    width: 100%;
+}
 .selectLabel {
     font-family: "SF Pro T", sans-serif;
     font-size: 14px;
@@ -11,18 +15,17 @@
 .selectField {
     display: block;
     padding: 10px 16px;
-    gap: 8px;
     border-radius: 8px;
     border: solid 1px #E1E3E6;
     appearance: none;
     width: 100%;
-    min-width: 360px;
     margin-bottom: 1rem;
     position: relative;
     cursor: pointer;
+    user-select: none;
 }
 
-.selectField:focus {
+.focused {
     outline: none;
     border-color: #FF5500;
 }
@@ -35,19 +38,36 @@
     pointer-events: none;
 }
 
-.selectField option {
-    width: 100%;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px;
-    background: white;
+.optionsList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+    border-top: none;
+}
+
+.optionItem {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.optionItem:hover {
+    background-color: #f0f0f0;
+}
+
+.placeholder {
     font-family: "SF Pro T", sans-serif;
-    text-transform: capitalize;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-}
-
-.selectField option:hover {
-    background-color: #FAFAFA;
+    text-align: left;
+    color: #ABABAB;
 }

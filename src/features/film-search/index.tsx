@@ -13,11 +13,11 @@ export function FilmSearch() {
 
     const dispatch = useAppDispatch();
 
-    const [, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const titleFilter: string = useAppSelector(state => state.film.titleFilter);
-    const [inputValue, setInputValue] = useState(titleFilter);
-    const [debouncedValue, setDebouncedValue] = useState(titleFilter);
+    const titleFilter: string = useAppSelector(state => state.filter.titleFilter);
+    const [inputValue, setInputValue] = useState(searchParams.get("title") || titleFilter);
+    const [debouncedValue, setDebouncedValue] = useState(searchParams.get("title") || titleFilter);
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -36,6 +36,7 @@ export function FilmSearch() {
             return prev;
         });
     }, [debouncedValue, dispatch, setSearchParams]);
+
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         setInputValue(event.currentTarget.value);
     }

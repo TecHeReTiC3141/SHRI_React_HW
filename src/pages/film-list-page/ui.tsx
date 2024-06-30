@@ -64,7 +64,6 @@ export function FilmsListPage() {
     }, [ data, data?.search_result, dispatch ]);
 
     useEffect(() => {
-        console.log("updateFilmPage(1)");
         dispatch(updateFilmPage(1));
     }, [ searchParams, dispatch ]);
 

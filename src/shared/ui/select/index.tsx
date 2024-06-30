@@ -1,37 +1,65 @@
 import styles from "./styles.module.css";
-import { ReactNode, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUp } from "@/shared/ui/icons";
+import classNames from "classnames";
 
 
 interface SelectFieldProps {
     name: string;
     labelText: string;
     value: string;
-    options: ReactNode;
+    options: { value: string; label: string }[];
     onSelect: (value: string) => void;
+    placeholder: string,
 }
 
-export function SelectField({ name, labelText, options, value, onSelect }: SelectFieldProps) {
-    console.log(name, value);
-    const [ isOpened, setIsOpened ] = useState<boolean>(false);
-    const selectRef = useRef<HTMLSelectElement | null>(null);
-    // TODO: implement styling for select options
-    return (
-        <div style={{ position: "relative" }}>
-            <label htmlFor={name} className={styles.selectLabel}>{labelText}</label>
-            <select name={name} id={name} className={styles.selectField} value={value}
-                    onFocus={() => setIsOpened(true)}
-                    onBlur={() => setIsOpened(false)} ref={selectRef}
-                    onChange={event => {
-                        event.currentTarget.blur();
-                        onSelect(event.currentTarget?.value);
+export function SelectField({ name, labelText, options, value, onSelect, placeholder }: SelectFieldProps) {
 
-            }}>
-                {options}
-            </select>
-            <span className={styles.actionButton}>
+    console.log(options);
+
+    const [ isOpened, setIsOpened ] = useState<boolean>(false);
+    const selectRef = useRef<HTMLDivElement | null>(null);
+
+    const handleOptionClick = (optionValue: string) => {
+        onSelect(optionValue);
+        setIsOpened(false);
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (selectRef.current && !selectRef.current?.contains(event.target as Node)) {
+            setIsOpened(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+    return (
+        <div className={styles.selectContainer} ref={selectRef}>
+            <label htmlFor={name} className={styles.selectLabel}>{labelText}</label>
+            <div className={classNames(styles.selectField, isOpened && styles.focused)} onClick={() => setIsOpened(!isOpened)}>
+                <div>{(value !== "0" && options.find(option => option.value === value)?.label) || <span className={styles.placeholder}>{placeholder}</span>}</div>
+                <span className={styles.actionButton}>
                     {isOpened ? <ArrowUp width={18} height={18}/> : <ArrowDown width={18} height={18}/>}
-            </span>
+                </span>
+            </div>
+            {isOpened && (
+                <ul className={styles.optionsList}>
+                    {options.map((option) => (
+                        <li
+                            key={option.value}
+                            className={styles.optionItem}
+                            onClick={() => handleOptionClick(option.value)}
+                        >
+                            {option.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
-    )
+
+    );
 }

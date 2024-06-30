@@ -35,8 +35,6 @@ export function LoginForm() {
             } else {
                 console.error(response.error);
             }
-
-            // TODO: implement proper error handling
         } catch (err) {
             console.error(err.message);
         }

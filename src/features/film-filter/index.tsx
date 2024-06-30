@@ -4,6 +4,7 @@ import { SelectField } from "@/shared/ui/select";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 import { updateGenreFilter, updateReleaseYearFilter } from "@/entities/film/model/filter-slice";
 import { useSearchParams } from "react-router-dom";
+import { useMemo } from "react";
 
 export function FilmFilter() {
 
@@ -11,8 +12,8 @@ export function FilmFilter() {
 
     const [ , setSearchParams ] = useSearchParams();
 
-    const genreFilter: GenresEnglish = useAppSelector(state => state.film.genreFilter);
-    const releaseYearFilter: YearsFilter = useAppSelector(state => state.film.releaseYearFilter);
+    const genreFilter: GenresEnglish = useAppSelector(state => state.filter.genreFilter);
+    const releaseYearFilter: YearsFilter = useAppSelector(state => state.filter.releaseYearFilter);
 
     function handleGenreSelect(genre: GenresEnglish) {
         dispatch(updateGenreFilter(genre));
@@ -38,20 +39,29 @@ export function FilmFilter() {
         });
     }
 
+    const genresOptions = useMemo(() => {
+        const options = [ { value: "0", label: "Не выбран" } ];
+        Object.entries(GENRES_MAP)
+            .forEach(([ key, value ]) => options.push(
+                { value: key, label: value }
+            ));
+        return options;
+    }, []);
+
+    const yearsOptions = useMemo(() => {
+        return Object.entries(YEARS).map(([ key, value ]) => (
+            { value: key, label: value }
+        ));
+    }, []);
+
     return (
         <div className={styles.filterForm}>
             <h4 className={styles.title}>Фильтр</h4>
-            <SelectField name="genre" labelText="Жанр" options={<>
-                <option value="">Не выбран</option>
-                {Object.entries(GENRES_MAP).map(([ key, value ]) => (
-                    <option key={key} value={key}>{value}</option>
-                ))}
-            </>} value={genreFilter} onSelect={handleGenreSelect}/>
-            <SelectField name="release-year" labelText="Год выпуска" options={<>
-                {Object.entries(YEARS).map(([ key, value ]) => (
-                    <option key={key} value={key}>{value}</option>
-                ))}
-            </>} value={releaseYearFilter} onSelect={handleYearSelect}/>
+            <SelectField name="genre" labelText="Жанр" placeholder={"Выберите жанр"}
+                         options={genresOptions} value={genreFilter} onSelect={handleGenreSelect}/>
+            <SelectField name="release-year" labelText="Год выпуска" placeholder={"Выберите год"}
+                         options={yearsOptions}
+                         value={releaseYearFilter} onSelect={handleYearSelect}/>
         </div>
     )
 }

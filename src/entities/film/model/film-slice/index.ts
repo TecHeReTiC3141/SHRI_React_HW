@@ -12,8 +12,6 @@ interface FilmState {
     actorsShift: number;
 }
 
-// TODO: move filters to separate slice
-
 const initialState: FilmState = {
     filmList: [],
     isLoading: false,

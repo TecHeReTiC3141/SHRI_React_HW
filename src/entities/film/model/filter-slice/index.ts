@@ -9,8 +9,6 @@ interface FilterState {
     totalPages: number;
 }
 
-// TODO: move filters to separate slice
-
 const initialState: FilterState = {
     titleFilter: "",
     genreFilter: "",
@@ -30,6 +28,7 @@ const filterSlice = createSlice<FilterState>({
             state.releaseYearFilter = action.payload;
         },
         updateTitleFilter: (state: FilterState, action: PayloadAction<string>) => {
+            console.log("update title", action.payload);
             state.titleFilter = action.payload;
         },
         prevPage: (state: FilterState) => {
