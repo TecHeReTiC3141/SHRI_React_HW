@@ -28,7 +28,6 @@ export function LoginForm() {
                 username,
                 password,
             }).unwrap();
-            console.log(response);
             if (response.token) {
                 dispatch(createToken(response.token) as UnknownAction);
                 closeForm();

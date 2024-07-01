@@ -28,7 +28,6 @@ const filterSlice = createSlice<FilterState>({
             state.releaseYearFilter = action.payload;
         },
         updateTitleFilter: (state: FilterState, action: PayloadAction<string>) => {
-            console.log("update title", action.payload);
             state.titleFilter = action.payload;
         },
         prevPage: (state: FilterState) => {
@@ -43,6 +42,11 @@ const filterSlice = createSlice<FilterState>({
         updateTotalPages: (state: FilterState, action: PayloadAction<number>) => {
             state.totalPages = action.payload;
         },
+    },
+    selectors: {
+        selectTitleFilter: (sliceState: FilterState) => sliceState.titleFilter,
+        selectGenreFilter: (sliceState: FilterState) => sliceState.genreFilter,
+        selectReleaseYearFilter: (sliceState: FilterState) => sliceState.releaseYearFilter,
     }
 });
 
@@ -57,3 +61,9 @@ export const {
     updateTotalPages,
     updateFilmPage,
 } = filterSlice.actions;
+
+export const {
+    selectTitleFilter,
+    selectGenreFilter,
+    selectReleaseYearFilter
+} = filterSlice.selectors;

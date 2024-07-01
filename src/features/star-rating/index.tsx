@@ -46,7 +46,6 @@ export function StarRating({ rating, disabled, className, movieId }: StarRatingP
     }
 
     const handleRatingSubmit = useCallback(async (mark: number) => {
-        console.log("in handle submit");
         try {
             const response: RateMovieResponse = await rateMovie({
                 movieId,

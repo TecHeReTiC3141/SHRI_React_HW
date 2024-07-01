@@ -61,7 +61,6 @@ export const apiSlice = createApi({
         }),
         getFilmById: query<FullMovieInfo, number>({
             query: (id) => {
-                console.log("in getFilmById", id);
                 return `/movie/${id}`;
             },
             providesTags: (result: FullMovieInfo) => [ { type: "Films", id: result.id } ],

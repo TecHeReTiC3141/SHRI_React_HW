@@ -10,6 +10,9 @@ import { useEffect } from "react";
 import {
     nextPage,
     prevPage,
+    selectGenreFilter,
+    selectReleaseYearFilter,
+    selectTitleFilter,
     updateFilmPage,
     updateGenreFilter,
     updateReleaseYearFilter,
@@ -28,9 +31,9 @@ export function FilmsListPage() {
 
     const [ searchParams, ] = useSearchParams();
 
-    const titleFilter = useAppSelector(state => state.filter.titleFilter);
-    const genreFilter = useAppSelector(state => state.filter.genreFilter);
-    const releaseYearFilter = useAppSelector(state => state.filter.releaseYear);
+    const titleFilter = useAppSelector(selectTitleFilter);
+    const genreFilter = useAppSelector(selectGenreFilter);
+    const releaseYearFilter = useAppSelector(selectReleaseYearFilter);
     const filmPage = useAppSelector(state => state.filter.filmPage);
     const totalPages = useAppSelector(state => state.filter.totalPages);
 
@@ -61,7 +64,6 @@ export function FilmsListPage() {
 
     useEffect(() => {
         if (data) {
-            console.log(data);
             dispatch(updateFilmList(data.search_result));
             dispatch(updateTotalPages(data.total_pages));
         }

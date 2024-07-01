@@ -15,8 +15,6 @@ interface SelectFieldProps {
 
 export function SelectField({ name, labelText, options, value, onSelect, placeholder }: SelectFieldProps) {
 
-    console.log(options);
-
     const [ isOpened, setIsOpened ] = useState<boolean>(false);
     const selectRef = useRef<HTMLDivElement | null>(null);
 

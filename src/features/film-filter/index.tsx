@@ -2,7 +2,12 @@ import styles from "./styles.module.css";
 import { GENRES_MAP, GenresEnglish, YEARS, YearsFilter } from "@/shared/api/films";
 import { SelectField } from "@/shared/ui/select";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
-import { updateGenreFilter, updateReleaseYearFilter } from "@/entities/film/model/filter-slice";
+import {
+    selectGenreFilter,
+    selectReleaseYearFilter,
+    updateGenreFilter,
+    updateReleaseYearFilter
+} from "@/entities/film/model/filter-slice";
 import { useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
 
@@ -12,8 +17,8 @@ export function FilmFilter() {
 
     const [ , setSearchParams ] = useSearchParams();
 
-    const genreFilter: GenresEnglish = useAppSelector(state => state.filter.genreFilter);
-    const releaseYearFilter: YearsFilter = useAppSelector(state => state.filter.releaseYearFilter);
+    const genreFilter: GenresEnglish = useAppSelector(selectGenreFilter);
+    const releaseYearFilter: YearsFilter = useAppSelector(selectReleaseYearFilter);
 
     function handleGenreSelect(genre: GenresEnglish) {
         dispatch(updateGenreFilter(genre));

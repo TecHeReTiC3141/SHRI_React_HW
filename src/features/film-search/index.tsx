@@ -3,7 +3,7 @@ import { MagnifyingGlass } from "@/shared/ui/icons";
 import { useAppDispatch, useAppSelector } from "@/entities/film/model";
 import { useSearchParams } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
-import { updateTitleFilter } from "@/entities/film/model/filter-slice";
+import { selectTitleFilter, updateTitleFilter } from "@/entities/film/model/filter-slice";
 
 
 const DEBOUNCE_DELAY = 300;
@@ -15,7 +15,7 @@ export function FilmSearch() {
 
     const [ searchParams, setSearchParams ] = useSearchParams();
 
-    const titleFilter: string = useAppSelector(state => state.filter.titleFilter);
+    const titleFilter: string = useAppSelector(selectTitleFilter);
     const [ inputValue, setInputValue ] = useState(searchParams.get("title") || titleFilter);
     const [ debouncedValue, setDebouncedValue ] = useState(searchParams.get("title") || titleFilter);
 
